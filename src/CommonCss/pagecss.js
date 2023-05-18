@@ -73,8 +73,13 @@ module.exports = {
     top: 160,
   },
   containerFull: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'black',
+    paddingVertical: 50,
   },
   goback: {
     fontSize: 30,
@@ -86,10 +91,33 @@ module.exports = {
   },
   formHead: {
     color: '#c0c0c0',
+    //color: 'black',
     fontWeight: '700',
+    //marginBottom: 30,
+  },
+  formHead3: {
+    fontSize: 25,
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    // padding: 10,
+    // borderRadius: 10,
+    // width: '80%',
+    // marginVertical: 10,
   },
   icons1: {
-    color: '',
+    color: 'white',
     fontSize: 30,
+  },
+  searchbar: {
+    width: '90%',
+    backgroundColor: 'white',
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: 20,
+    fontSize: 18,
+    //alignItems: 'center',
+    //alignSelf: 'center',
   },
 };

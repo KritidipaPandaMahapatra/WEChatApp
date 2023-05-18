@@ -1,12 +1,25 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {icons1} from '../CommonCss/pagecss';
-const TopNavbar = () => {
+//import {icons1} from '../CommonCss/pagecss';
+const TopNavbar = ({navigation, page}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>WEChat</Text>
-      <Ionicons name={'chatbubbles'} style={styles.icon} />
+      {page === 'MainPage' && (
+        <Ionicons
+          name={'chatbubbles'}
+          style={styles.icon}
+          onPress={() => navigation.navigate('All_Chats')}
+        />
+      )}
+      {page === 'My_UserProfile' && (
+        <Ionicons
+          name={'settings-sharp'}
+          style={styles.icon}
+          onPress={() => navigation.navigate('Settings1')}
+        />
+      )}
     </View>
   );
 };
