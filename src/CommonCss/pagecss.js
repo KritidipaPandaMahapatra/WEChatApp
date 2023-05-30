@@ -38,8 +38,9 @@ module.exports = {
   },
   textInput: {
     width: '90%',
+    padding: 10,
     backgroundColor: '#eeeeee',
-    borderRadius: 25,
+    borderRadius: 20,
     paddingHorizontal: 16,
     fontSize: 16,
     color: '#002f6c',
@@ -68,9 +69,12 @@ module.exports = {
   },
   svgCurvefooter: {
     position: 'relative',
+    bottom: 0,
     width: Dimensions.get('window').width,
     left: 270,
+    //top: 260,
     top: 160,
+    // top: 130,
   },
   containerFull: {
     flex: 1,

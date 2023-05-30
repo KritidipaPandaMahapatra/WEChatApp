@@ -14,41 +14,36 @@ import TopNavbar from '../../Components/TopNavbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import images from '../../assets/images.jpeg';
 import Foundation from 'react-native-vector-icons/Foundation';
-const My_UserProfile = ({navigation, page}) => {
+const Other_UserProfile = ({navigation, route}) => {
   const [userData, setUserData] = React.useState(null);
   const [loading, setLoading] = useState(false);
+  const {user} = route.params;
   console.log('Userr->', userData);
-  const loadData = () => {
-    AsyncStorage.getItem('user')
-      .then(async data => {
-        // console.log('email', data.email);
-        //setUserData(JSON.parse(data));
-        fetch(`http://10.0.2.2:3000/userData`, {
-          method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + JSON.parse(data).token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: JSON.parse(data).user.email,
-          }),
-        })
-          .then(res => res.json())
-          .then(data => {
-            if (data.message == 'User Found') {
-              setUserData(data.user);
-              //  console.log(data.user);
-            } else {
-              alert('Something went wrong');
-              navigation.navigate('Login');
-            }
-          })
-          .catch(err => {
-            // navigation.navigate('Login');
-            console.log(err);
-          });
+  const loadData = async () => {
+    fetch(`http://10.0.2.2:3000/otheruserData`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: user.email,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message == 'User Found') {
+          setUserData(data.user);
+          ismyprofile(data.user);
+          CheckFollow(data.user);
+          //  console.log(data.user);
+        } else {
+          alert('User Not Found');
+          navigation.navigate('SearchUserPage');
+        }
       })
       .catch(err => {
+        alert('Something went wrong');
+        navigation.navigate('SearchUserPage');
         console.log(err);
       });
   };
@@ -57,41 +52,56 @@ const My_UserProfile = ({navigation, page}) => {
   }, []);
   // console.log('Post Description->', userData.posts);
   // console.log('Description->', userData.description);
-  const data = {
-    username: 'user1',
-    followers: 1100,
-    following: 1023,
-    description: 'I am a software developer',
-    profile_Image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKZC10tCzjEfIWCY8xr8po45JqOcmkjT-3v-0GxEys_SAcBtv5yGYvFWsX7qJDaJzsbzc&usqp=CAU',
-    posts: [
-      {
-        id: 1,
-        post_Image:
-          'https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg',
-      },
-      {
-        id: 2,
-        post_Image:
-          'https://thumbs.dreamstime.com/b/bird-black-capped-lory-12845174.jpg',
-      },
-      {
-        id: 3,
-        post_Image:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1j6JvaLSgm_t5CY43Hns7PRbRn9bv5TWrYw&usqp=CAU',
-      },
-      {
-        id: 4,
-        post_Image:
-          'https://thumbs.dreamstime.com/b/bird-black-capped-lory-12845174.jpg',
-      },
-    ],
+  //check my profile or other profile
+  const [issameuser, setIssameuser] = React.useState(false);
+  const ismyprofile = async otherprofile => {
+    AsyncStorage.getItem('user').then(loggeduser => {
+      const loggeduserobj = JSON.parse(loggeduser);
+      if (loggeduserobj.user.email == otherprofile.email) {
+        setIssameuser(true);
+        console.log('same user');
+      } else {
+        setIssameuser(false);
+        console.log('other user');
+      }
+    });
   };
+  //check follow or not
+  const [isfollowing, setIsfollowing] = React.useState(false);
+  const CheckFollow = async otheruser => {
+    AsyncStorage.getItem('user').then(loggeduser => {
+      const loggeduseruserobj = JSON.parse(loggeduser);
+      console.log('JJJJJ', loggeduseruserobj);
+      fetch(`http://10.0.2.2:3000/checkfollow`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          followfrom: loggeduseruserobj.user.email,
+          followto: otheruser.email,
+        }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log('checkfollow', data);
+          if (data.message == 'User in following list') {
+            setIsfollowing(false);
+          } else if (data.message == 'User not in following list') {
+            setIsfollowing(true);
+          } else {
+            alert('Something went wrong');
+          }
+        });
+    });
+  };
+  //follow this user
+  //unfollow this user
   return (
     <View style={styles.container}>
       <StatusBar />
-      <TopNavbar navigation={navigation} page={'My_UserProfile'} />
-      <BottomNavbar navigation={navigation} page={'My_UserProfile'} />
+      <TopNavbar navigation={navigation} page={'Other_UserProfile'} />
+      <BottomNavbar navigation={navigation} page={'SearchUserPage'} />
       <Foundation
         name="refresh"
         size={30}
@@ -111,6 +121,16 @@ const My_UserProfile = ({navigation, page}) => {
               <Image style={styles.profile_Image} source={images} />
             )}
             <Text style={styles.txt}>@{userData.username}</Text>
+            {!issameuser && (
+              <View style={styles.row}>
+                {isfollowing ? (
+                  <Text style={styles.follow}>Followed</Text>
+                ) : (
+                  <Text style={styles.follow}>Follow</Text>
+                )}
+                <Text style={styles.message}>Message</Text>
+              </View>
+            )}
             <View style={styles.c11}>
               <View style={styles.c111}>
                 <Text style={styles.txt1}>Followers</Text>
@@ -136,12 +156,12 @@ const My_UserProfile = ({navigation, page}) => {
             <View style={styles.c1inner}>
               <Text style={styles.txt}>Your Posts</Text>
               {/* {userData.posts.map(item => {
-                return (
-                  <Text style={styles.description} key={item.postdescription}>
-                    {item.postdescription}
-                  </Text>
-                );
-              })} */}
+                  return (
+                    <Text style={styles.description} key={item.postdescription}>
+                      {item.postdescription}
+                    </Text>
+                  );
+                })} */}
               <View style={styles.c13}>
                 {userData.posts.map(item => {
                   return (
@@ -166,7 +186,7 @@ const My_UserProfile = ({navigation, page}) => {
     </View>
   );
 };
-export default My_UserProfile;
+export default Other_UserProfile;
 
 const styles = StyleSheet.create({
   container: {
@@ -252,5 +272,28 @@ const styles = StyleSheet.create({
     top: 50,
     right: 5,
     zIndex: 1,
+  },
+  follow: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 10,
+    backgroundColor: '#0AD6A0',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    borderRadius: 20,
+  },
+  message: {
+    color: 'gray',
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 10,
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderRadius: 20,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

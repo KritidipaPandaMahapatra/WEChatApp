@@ -98,7 +98,7 @@ const ChangeDescription = ({navigation}) => {
           </TouchableOpacity>
         )}
       </View>
-      <WavyFooter customStyles={[svgCurvefooter, {marginTop: 30}]} />
+      <WavyFooter customStyles={[svgCurvefooter, {marginTop: 10}]} />
     </View>
   );
 };

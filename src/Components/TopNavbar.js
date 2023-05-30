@@ -2,9 +2,17 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //import {icons1} from '../CommonCss/pagecss';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const TopNavbar = ({navigation, page}) => {
   return (
     <View style={styles.container}>
+      <MaterialIcons
+        name="library-add"
+        size={24}
+        color="white"
+        style={styles.addicon}
+        onPress={() => navigation.navigate('AddPost')}
+      />
       <Text style={styles.text}>WEChat</Text>
       {page === 'MainPage' && (
         <Ionicons
@@ -40,13 +48,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    left: 30,
+    // left: 30,
     fontSize: 20,
     fontWeight: 'bold',
   },
   icon: {
     color: '#fff',
-    right: 30,
+    //  right: 30,
     fontSize: 30,
   },
+  addicon: {},
 });

@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import WavyHeader from '../../../Components/WavyHeader';
@@ -57,6 +58,7 @@ const ForgotPassword_EnterVerificationcode = ({navigation, route}) => {
         <TextInput
           style={textInput}
           placeholder="Enter 6-digit code here"
+          keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
           onChangeText={text => setVerificationCode(text)}
         />
         <TouchableOpacity

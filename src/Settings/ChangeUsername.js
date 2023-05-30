@@ -96,7 +96,7 @@ const ChangeUsername = ({navigation}) => {
           </TouchableOpacity>
         )}
       </View>
-      <WavyFooter customStyles={[svgCurvefooter, {marginTop: 50}]} />
+      <WavyFooter customStyles={[svgCurvefooter, {marginTop: 30}]} />
     </View>
   );
 };

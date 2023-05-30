@@ -16,7 +16,7 @@ const EditProfile = ({navigation}) => {
       <Text style={formHead3}>Edit Profile</Text>
       <Text
         style={styles.txt1}
-        onPress={() => navigation.navigate('ChangePic')}>
+        onPress={() => navigation.navigate('UploadProfilePic')}>
         Change Profile Picture
       </Text>
       <Text

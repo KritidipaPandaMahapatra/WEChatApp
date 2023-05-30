@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {formHead3, gohomeicon} from '../CommonCss/pagecss';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Settings1 = ({navigation}) => {
   const logout = () => {
     AsyncStorage.removeItem('user').then(() => {

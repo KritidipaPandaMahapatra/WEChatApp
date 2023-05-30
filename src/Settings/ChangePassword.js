@@ -79,7 +79,7 @@ const ChangePassword = ({navigation}) => {
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: 140,
+          marginTop: 120,
           marginHorizontal: 25,
         }}>
         <Text style={text}>Choose a Strong Password</Text>

@@ -1,6 +1,7 @@
 // In App.js in a new project
 
 import * as React from 'react';
+import {SafeAreaView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './src/Screens/LoginSignup/Login/Login';
@@ -23,6 +24,9 @@ import ChangePassword from './src/Settings/ChangePassword';
 import EditProfile from './src/Settings/EditProfile';
 import ChangeUsername from './src/Settings/ChangeUsername';
 import ChangeDescription from './src/Settings/ChangeDescription';
+import UploadProfilePic from './src/Settings/UploadProfilePic';
+import AddPost from './src/Screens/Mainpage/AddPost';
+import Other_UserProfile from './src/Screens/Profile/Other_UserProfile';
 // function HomeScreen({navigation}) {
 //   return (
 //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -46,75 +50,86 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          // options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Signup_EnterEmail"
-          component={Signup_EnterUseremail}
-        />
-        <Stack.Screen
-          name="Signup_EnterVeirificationCode"
-          component={Signup_EnterVeirificationCode}
-        />
-        <Stack.Screen
-          name="Signup_ChooseUsername"
-          component={Signup_ChooseUsername}
-        />
-        <Stack.Screen
-          name="Signup_Accountcreated"
-          component={Signup_Accountcreated}
-        />
-        <Stack.Screen
-          name="Signup_ChoosePassword"
-          component={Signup_ChoosePassword}
-        />
+      <SafeAreaView style={{flex: 1}}>
+        <Stack.Navigator
+          screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            // options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Signup_EnterEmail"
+            component={Signup_EnterUseremail}
+          />
+          <Stack.Screen
+            name="Signup_EnterVeirificationCode"
+            component={Signup_EnterVeirificationCode}
+          />
+          <Stack.Screen
+            name="Signup_ChooseUsername"
+            component={Signup_ChooseUsername}
+          />
+          <Stack.Screen
+            name="Signup_Accountcreated"
+            component={Signup_Accountcreated}
+          />
+          <Stack.Screen
+            name="Signup_ChoosePassword"
+            component={Signup_ChoosePassword}
+          />
 
-        <Stack.Screen
-          name="ForgotPassword_AccountRecoverd"
-          component={ForgotPassword_AccountRecoverd}
-        />
-        <Stack.Screen
-          name="ForgotPassword_ChoosePassword"
-          component={ForgotPassword_ChoosePassword}
-        />
-        <Stack.Screen
-          name="Forgotpassword_Enteremail"
-          component={Forgotpassword_Enteremail}
-        />
-        <Stack.Screen
-          name="ForgotPassword_EnterVerificationcode"
-          component={ForgotPassword_EnterVerificationcode}
-        />
+          <Stack.Screen
+            name="ForgotPassword_AccountRecoverd"
+            component={ForgotPassword_AccountRecoverd}
+          />
+          <Stack.Screen
+            name="ForgotPassword_ChoosePassword"
+            component={ForgotPassword_ChoosePassword}
+          />
+          <Stack.Screen
+            name="Forgotpassword_Enteremail"
+            component={Forgotpassword_Enteremail}
+          />
+          <Stack.Screen
+            name="ForgotPassword_EnterVerificationcode"
+            component={ForgotPassword_EnterVerificationcode}
+          />
 
-        <Stack.Screen name="MainPage" component={MainPage} />
+          <Stack.Screen name="MainPage" component={MainPage} />
 
-        <Stack.Screen
-          name="All_Chats"
-          component={All_Chats}
-          options={{animation: 'slide_from_left'}}
-        />
-        <Stack.Screen
-          name="SearchUserPage"
-          component={SearchUserPage}
-          options={{animation: 'slide_from_bottom'}}
-        />
-        <Stack.Screen name="NotificationPage" component={NotificationPage} />
-        <Stack.Screen
-          name="My_UserProfile"
-          component={My_UserProfile}
-          options={{animation: 'slide_from_left'}}
-        />
-        <Stack.Screen name="Settings1" component={Settings1} />
-        <Stack.Screen name="Change Password" component={ChangePassword} />
-        <Stack.Screen name="Edit Profile" component={EditProfile} />
-        <Stack.Screen name="Change Username" component={ChangeUsername} />
-        <Stack.Screen name="Change Description" component={ChangeDescription} />
-      </Stack.Navigator>
+          <Stack.Screen
+            name="All_Chats"
+            component={All_Chats}
+            options={{animation: 'slide_from_left'}}
+          />
+          <Stack.Screen
+            name="SearchUserPage"
+            component={SearchUserPage}
+            options={{animation: 'slide_from_bottom'}}
+          />
+          <Stack.Screen name="NotificationPage" component={NotificationPage} />
+          <Stack.Screen
+            name="My_UserProfile"
+            component={My_UserProfile}
+            options={{animation: 'slide_from_left'}}
+          />
+          <Stack.Screen name="Settings1" component={Settings1} />
+          <Stack.Screen name="Change Password" component={ChangePassword} />
+          <Stack.Screen name="Edit Profile" component={EditProfile} />
+          <Stack.Screen name="Change Username" component={ChangeUsername} />
+          <Stack.Screen
+            name="Change Description"
+            component={ChangeDescription}
+          />
+          <Stack.Screen name="UploadProfilePic" component={UploadProfilePic} />
+          <Stack.Screen name="AddPost" component={AddPost} />
+          <Stack.Screen
+            name="Other_UserProfile"
+            component={Other_UserProfile}
+          />
+        </Stack.Navigator>
+      </SafeAreaView>
     </NavigationContainer>
   );
 }

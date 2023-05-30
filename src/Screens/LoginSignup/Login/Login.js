@@ -36,6 +36,7 @@ const Login = ({navigation}) => {
       alert('Please Enter Email & Password');
     } else {
       setLoading(true);
+      console.log('Inner else');
       fetch(`http://10.0.2.2:3000/signin`, {
         method: 'POST',
         headers: {
@@ -98,7 +99,10 @@ const Login = ({navigation}) => {
         {loading ? (
           <ActivityIndicator size="large" color="white" />
         ) : (
-          <TouchableOpacity style={button} onPress={() => handleLogin()}>
+          <TouchableOpacity
+            style={button}
+            //onPress={() => navigation.navigate('MainPage')}
+            onPress={() => handleLogin()}>
             <Text style={buttonText}>Login</Text>
           </TouchableOpacity>
         )}
