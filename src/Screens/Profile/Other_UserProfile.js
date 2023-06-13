@@ -12,13 +12,13 @@ import React, {useState, useEffect} from 'react';
 import BottomNavbar from '../../Components/BottomNavbar';
 import TopNavbar from '../../Components/TopNavbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import images from '../../assets/images.jpeg';
+import nopic from '../../assets/nopic.jpeg';
 import Foundation from 'react-native-vector-icons/Foundation';
 const Other_UserProfile = ({navigation, route}) => {
   const [userData, setUserData] = React.useState(null);
   const [loading, setLoading] = useState(false);
   const {user} = route.params;
-  console.log('Userr->', userData);
+  //console.log('Userr->', userData);
   const loadData = async () => {
     fetch(`http://10.0.2.2:3000/otheruserData`, {
       method: 'POST',
@@ -31,6 +31,7 @@ const Other_UserProfile = ({navigation, route}) => {
     })
       .then(res => res.json())
       .then(data => {
+        // console.log('DATA__>', data);
         if (data.message == 'User Found') {
           setUserData(data.user);
           ismyprofile(data.user);
@@ -71,7 +72,6 @@ const Other_UserProfile = ({navigation, route}) => {
   const CheckFollow = async otheruser => {
     AsyncStorage.getItem('user').then(loggeduser => {
       const loggeduseruserobj = JSON.parse(loggeduser);
-      console.log('JJJJJ', loggeduseruserobj);
       fetch(`http://10.0.2.2:3000/checkfollow`, {
         method: 'POST',
         headers: {
@@ -86,9 +86,9 @@ const Other_UserProfile = ({navigation, route}) => {
         .then(data => {
           console.log('checkfollow', data);
           if (data.message == 'User in following list') {
-            setIsfollowing(false);
-          } else if (data.message == 'User not in following list') {
             setIsfollowing(true);
+          } else if (data.message == 'User not in following list') {
+            setIsfollowing(false);
           } else {
             alert('Something went wrong');
           }
@@ -96,7 +96,61 @@ const Other_UserProfile = ({navigation, route}) => {
     });
   };
   //follow this user
+  const followUser = async otheruser => {
+    console.log('Inside Follow');
+    const loggeduser = await AsyncStorage.getItem('user');
+    const loggeduserobj = JSON.parse(loggeduser);
+    fetch(`http://10.0.2.2:3000/followuser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        followfrom: loggeduserobj.user.email,
+        followto: otheruser.email,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message == 'User Followed') {
+          setIsfollowing(true);
+          loadData();
+          console.log('same user');
+        } else {
+          // setIssameuser(false);
+          //console.log('other user');
+          console.log('something went wrong');
+        }
+      });
+  };
   //unfollow this user
+  const unFollowuser = async otheruser => {
+    console.log('Inside unfollow');
+    const loggeduser = await AsyncStorage.getItem('user');
+    const loggeduserobj = JSON.parse(loggeduser);
+    fetch(`http://10.0.2.2:3000/unfollowuser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        followfrom: loggeduserobj.user.email,
+        followto: otheruser.email,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('unfollow', data);
+        if (data.message == 'User Unfollowed') {
+          setIsfollowing(false);
+          loadData();
+          console.log('same user');
+        } else {
+          setIssameuser(false);
+          console.log('other user');
+        }
+      });
+  };
   return (
     <View style={styles.container}>
       <StatusBar />
@@ -118,17 +172,34 @@ const Other_UserProfile = ({navigation, route}) => {
                 source={{uri: userData.profilepic}}
               />
             ) : (
-              <Image style={styles.profile_Image} source={images} />
+              <Image style={styles.profile_Image} source={nopic} />
             )}
             <Text style={styles.txt}>@{userData.username}</Text>
             {!issameuser && (
               <View style={styles.row}>
                 {isfollowing ? (
-                  <Text style={styles.follow}>Followed</Text>
+                  <Text
+                    style={styles.follow}
+                    onPress={() => unFollowuser(userData)}>
+                    Following
+                  </Text>
                 ) : (
-                  <Text style={styles.follow}>Follow</Text>
+                  <Text
+                    style={styles.follow}
+                    onPress={() => followUser(userData)}>
+                    Follow
+                  </Text>
                 )}
-                <Text style={styles.message}>Message</Text>
+                <Text
+                  style={styles.message}
+                  onPress={() =>
+                    navigation.navigate('MessagePage', {
+                      fuseremail: userData.email,
+                      fuserid: userData._id,
+                    })
+                  }>
+                  Message
+                </Text>
               </View>
             )}
             <View style={styles.c11}>
@@ -152,31 +223,41 @@ const Other_UserProfile = ({navigation, route}) => {
               <Text style={styles.description}>{userData.description}</Text>
             )}
           </View>
-          {userData.posts.length > 0 ? (
-            <View style={styles.c1inner}>
-              <Text style={styles.txt}>Your Posts</Text>
-              {/* {userData.posts.map(item => {
+          {isfollowing || issameuser ? (
+            <View>
+              {userData.posts.length > 0 ? (
+                <View style={styles.c1inner}>
+                  <Text style={styles.txt}>Your Posts</Text>
+                  {/* {userData.posts.map(item => {
                   return (
                     <Text style={styles.description} key={item.postdescription}>
                       {item.postdescription}
                     </Text>
                   );
                 })} */}
-              <View style={styles.c13}>
-                {userData.posts.map(item => {
-                  return (
-                    <Image
-                      key={item.post}
-                      style={styles.post_Image}
-                      source={{uri: item.post}}
-                    />
-                  );
-                })}
-              </View>
+                  <View style={styles.c13}>
+                    {userData.posts.map(item => {
+                      return (
+                        <Image
+                          key={item.post}
+                          style={styles.post_Image}
+                          source={{uri: item.post}}
+                        />
+                      );
+                    })}
+                  </View>
+                </View>
+              ) : (
+                <View style={styles.c2}>
+                  <Text style={styles.txt1}>
+                    You have not posted anything yet
+                  </Text>
+                </View>
+              )}
             </View>
           ) : (
             <View style={styles.c2}>
-              <Text style={styles.txt1}>You have not posted anything yet</Text>
+              <Text style={styles.txt1}>Follow to see posts</Text>
             </View>
           )}
         </ScrollView>

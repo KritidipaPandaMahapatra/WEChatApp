@@ -27,6 +27,7 @@ import ChangeDescription from './src/Settings/ChangeDescription';
 import UploadProfilePic from './src/Settings/UploadProfilePic';
 import AddPost from './src/Screens/Mainpage/AddPost';
 import Other_UserProfile from './src/Screens/Profile/Other_UserProfile';
+import MessagePage from './src/Screens/ChatSection/MessagePage';
 // function HomeScreen({navigation}) {
 //   return (
 //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -128,6 +129,7 @@ function App() {
             name="Other_UserProfile"
             component={Other_UserProfile}
           />
+          <Stack.Screen name="MessagePage" component={MessagePage} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>
